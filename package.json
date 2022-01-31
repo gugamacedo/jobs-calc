@@ -1,0 +1,27 @@
+{
+  "name": "jobs-calc",
+  "version": "1.0.0",
+  "description": "Freelance Calculator",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gugamacedo/jobs-calc.git"
+  },
+  "keywords": [],
+  "author": "gugamacedo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gugamacedo/jobs-calc/issues"
+  },
+  "homepage": "https://github.com/gugamacedo/jobs-calc#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
