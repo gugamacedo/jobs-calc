@@ -1,26 +1,59 @@
-let data = [
-  {
-    id: 1,
-    name: 'Teste Um',
-    'daily-hours': 2,
-    'total-hours': 60,
-    created_at: Date.now(),
-  },
-  {
-    id: 2,
-    name: 'Teste Dois',
-    'daily-hours': 2,
-    'total-hours': 47,
-    created_at: Date.now(),
-  },
-]
+const Database = require('../db/config')
 
 module.exports = {
-  get: () => data,
+  async get() {
+    const db = await Database()
 
-  update: (newData) => data = newData,
+    const data = await db.all(`SELECT * FROM jobs`) // tipo o get mas pega vários registros
 
-  delete: (jobId) => data = data.filter(job => Number(job['id']) !== Number(jobId)),
+    await db.close()
 
-  save: (newData) => data.push(newData)
+    return data.map((item) => ({
+      id: item['id'],
+      name: item['name'],
+      'daily-hours': item['daily_hours'],
+      'total-hours': item['total_hours'],
+      created_at: item['created_at'],
+    }))
+  },
+
+  async update(updatedJob, jobId) {
+    const db = await Database()
+
+    db.run(`UPDATE jobs SET 
+    name = "${updatedJob['name']}",
+    daily_hours = ${updatedJob['daily-hours']},
+    total_hours = ${updatedJob['total-hours']}
+    WHERE id = ${jobId}
+    `)
+
+    await db.close()
+
+  },
+
+  async delete(jobId) {
+    const db = await Database()
+
+    await db.run(`DELETE FROM jobs WHERE id = ${jobId}`)
+
+    await db.close()
+  },
+
+  async save(newJob) {
+    const db = await Database()
+
+    await db.run(`INSERT INTO jobs (
+      name,
+      daily_hours,
+      total_hours,
+      created_at
+    ) VALUES (
+      "${newJob['name']}",
+      ${newJob['daily-hours']},
+      ${newJob['total-hours']},
+      ${newJob['created_at']}
+    )`)
+
+    await db.close()
+  },
 }
